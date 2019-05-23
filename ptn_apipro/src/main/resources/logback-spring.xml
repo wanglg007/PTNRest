@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+  <!-- 开启后可以通过jmx动态控制日志级别(springboot Admin的功能) -->
+  <!--<jmxConfigurator/>-->
+
+  <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+  <property name="LOG_PATH" value="./ptn_apipro/logs/${springAppName}"/>
+  <property name="LOG_FILE" value="${springAppName}"/>
+
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>${LOG_PATH}/${LOG_FILE}</File>
+    <encoder>
+      <pattern>%date [%level] [%thread] %logger{60} [%file : %line] %msg%n</pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- 添加.gz 历史日志会启用压缩 大大缩小日志文件所占空间 -->
+      <fileNamePattern>${LOG_PATH}daily/${LOG_FILE}.%d{yyyy-MM-dd}.gz</fileNamePattern>
+      <maxHistory>10</maxHistory><!--  保留10天日志 -->
+    </rollingPolicy>
+  </appender>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread, %X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="STASH"  class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    <destination>192.168.110.80:5000</destination>
+
+    <encoder  class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+      <providers>
+        <mdc /> <!-- MDC variables on the Thread will be written as JSON fields -->
+        <context /> <!--Outputs entries from logback's context -->
+        <version /> <!-- Logstash json format version, the @version field in the output -->
+        <logLevel />
+        <loggerName />
+
+        <pattern>
+          <pattern>
+            {
+            "serviceName": "ptn_apipro"
+            }
+          </pattern>
+        </pattern>
+
+        <threadName />
+        <message />
+        <logstashMarkers />
+        <stackTrace />
+      </providers>
+    </encoder>
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="FILE"/>
+    <appender-ref ref="STASH"/>
+  </root>
+</configuration>

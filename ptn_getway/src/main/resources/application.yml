@@ -1,0 +1,19 @@
+server:
+  port: 8767
+spring:
+  application:
+    name: ptn-getway
+  cloud:
+    gateway:
+      routes:
+      - id: ptn_apicon
+        uri: http://ptn-apicon:8766
+        predicates:
+        - Path=/api/**
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 1
+    lease-expiration-duration-in-seconds: 2
+  client:
+    service-url:
+      defaultZone: http://ptn-center-s01:8761/eureka,http://ptn-center-s02:8762/eureka,http://ptn-center-s03:8763/eureka

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="ptn_apicon" />
+        <module name="ptn_apipro" />
+        <module name="ptn_center" />
+        <module name="ptn_config" />
+        <module name="ptn_getway" />
+        <module name="ptn_montor" />
+        <module name="ptn_turbin" />
+        <module name="PTNRest" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ptn_trace" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

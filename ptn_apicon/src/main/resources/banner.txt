@@ -1,0 +1,6 @@
+${AnsiColor.BRIGHT_CYAN}
+##############################################################
+# @author PalletOne core developers <dev@pallet.one>
+# @date 2018
+# Modified by wanglg007@gmail.com
+##############################################################
